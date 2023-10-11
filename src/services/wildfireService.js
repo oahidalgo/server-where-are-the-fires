@@ -1,7 +1,9 @@
 const axios = require("axios");
 const isoCountries = require("../data/iso3166.json");
+const AppError = require("../utils/appError");
 
-let cachedWildfireEvents = null; // Variable para almacenar los eventos de incendios forestales en memoria
+// Var to store data in memory
+let cachedWildfireEvents = null;
 
 async function fetchWildfireEvents() {
   //In case cachedWildFireEvents exists its not going to retrieve it from server again
@@ -15,9 +17,18 @@ async function fetchWildfireEvents() {
     status: process.env.WILDFIRE_STATUS,
   };
 
+  //Calling EONET service
   const response = await axios.get(process.env.EONET_API_CLOSED_WF, { params });
+
+  //Validating the response, the parent fn will be catch the error in case of it
+  if (response.status != 200)
+    throw new AppError(
+      "An error ocurred while retrieving data from EONET API",
+      500
+    );
+
   const features = response.data.features;
-  // Almacena los datos en caché para futuras solicitudes
+  // Saving data in memory to not make multiple requests
   cachedWildfireEvents = features;
 
   return features;
