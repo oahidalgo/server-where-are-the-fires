@@ -9,7 +9,7 @@
     "start:prod": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Oliver Hidalgo",
   "license": "ISC",
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.15.3",

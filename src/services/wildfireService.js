@@ -34,7 +34,7 @@ async function fetchWildfireEvents() {
   return features;
 }
 
-// Función para geocodificar un objeto Feature de tipo "Point" usando Mapbox
+// Geocodify coordinates for "Point" types
 async function geocodePointFeature(feature) {
   const [lon, lat] = feature.geometry.coordinates;
   const apiUrl = `${process.env.MAPBOX_API_URL}${lon},${lat}.json`;
@@ -44,8 +44,11 @@ async function geocodePointFeature(feature) {
     access_token: accessToken,
   };
 
+  //Calling mapbox API to get features
   const response = await axios.get(apiUrl, { params });
   const mapFeatures = response.data.features;
+  //Each features has inner objects that represent full address, country, city, state, etc.
+  //We are only interested in country inner object
   const country = mapFeatures.find((feature) => feature.id.includes("country"));
   const countryCode = getCountryCode(country?.place_name);
 
