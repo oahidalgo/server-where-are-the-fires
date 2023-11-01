@@ -50,9 +50,12 @@ async function geocodePointFeature(feature) {
   //Each features has inner objects that represent full address, country, city, state, etc.
   //We are only interested in country inner object
   const country = mapFeatures.find((feature) => feature.id.includes("country"));
-  const countryCode = getCountryCode(country?.place_name);
+  const countryCode = country
+    ? getCountryCode(country?.place_name)
+    : process.env.COUNTRY_NOT_FOUND_CODE;
 
   return {
+    id: feature?.properties?.id || 0,
     title: feature?.properties?.title || "UNAVAILABLE",
     country: countryCode || process.env.COUNTRY_NOT_FOUND_CODE,
   };

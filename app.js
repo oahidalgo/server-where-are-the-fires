@@ -7,6 +7,7 @@ const compression = require("compression");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
+const AppError = require("./src/utils/appError");
 const app = express();
 
 // Import route modules
